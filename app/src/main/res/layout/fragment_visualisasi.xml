@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/lblVisual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Visualisasi"
+        android:layout_marginTop="15dp"
+        android:textSize="22sp" />
+
+    <EditText
+        android:id="@+id/inptFile2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="00-riau" />
+
+    <Button
+        android:id="@+id/btnVisualisasi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Visualisasi" />
+
+
+
+</LinearLayout>
