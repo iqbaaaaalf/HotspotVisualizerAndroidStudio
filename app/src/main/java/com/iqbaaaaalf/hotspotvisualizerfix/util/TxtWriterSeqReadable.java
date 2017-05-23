@@ -13,9 +13,16 @@ import java.io.PrintWriter;
 
 public class TxtWriterSeqReadable implements TxtWrite {
     private StringBuilder sb = new StringBuilder();
+    private StringBuilder sbTemp = new StringBuilder();
     private PrintWriter pw;
     private Long support = null;
     private String text = null;
+    private String oneLine = null ;
+    private String openingWord = "Kemunculan beruntun pada tanggal ";
+
+    public String getOneLine() {
+        return oneLine;
+    }
 
     public void setSupport(Long support) {
         this.support = support;
@@ -33,16 +40,22 @@ public class TxtWriterSeqReadable implements TxtWrite {
 
     public void txtTulis(String tanggal){
         sb.append(tanggal + ", ");
+        sbTemp.append(tanggal + ", ");
     }
 
     public void openingWord(){
-        sb.append("Kemunculan beruntun pada tanggal ");
+        sb.append(openingWord);
+        sbTemp.append(openingWord);
     }
 
     @Override
     public void setOneSeq() {
         sb.append("pada "+support+" titik.");
         sb.append("\n");
+        sbTemp.append("pada "+support+" titik.");
+        sbTemp.append("\n");
+        oneLine = sbTemp.toString();
+        sbTemp.replace(0, sbTemp.length(),"");
     }
 
     @Override

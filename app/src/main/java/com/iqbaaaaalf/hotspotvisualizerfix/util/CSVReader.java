@@ -1,4 +1,6 @@
 package com.iqbaaaaalf.hotspotvisualizerfix.util;
+import com.iqbaaaaalf.hotspotvisualizerfix.dataType.Point;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -68,7 +70,7 @@ public class CSVReader {
 		
 	}
 	
-	public void csvSearch(double longit, double latit, String alamatFile){
+	public void csvSearchForSeq(double longit, double latit, String alamatFile){
 		String line = "";
 		String csvSplitBy = ",";
 		List<Long> listUnix = new ArrayList<Long>();
@@ -99,6 +101,41 @@ public class CSVReader {
         }
 		
 	}
+
+	public ArrayList<Point> csvSearchForVisual(Long unix, String alamatFile){
+		String line = "";
+		String csvSplitBy = ",";
+		ArrayList<Point> listTitik = new ArrayList<Point>();
+		Long unixTimeCsv = (long) 0;
+		Point titik = new Point();
+        Double longitCsv = (double) 0;
+        Double latitCsv = (double) 0;
+
+		try (BufferedReader br = new BufferedReader(new FileReader(alamatFile))) {
+			br.readLine();
+			while ((line = br.readLine()) != null) {
+				// menggunakan pembatas koma - comma separated value
+				String[] kolom = line.split(csvSplitBy);
+				unixTimeCsv = Long.parseLong(kolom[3]);
+				if(unixTimeCsv.equals(unix)){
+                    longitCsv = Double.parseDouble(kolom[0]);
+                    latitCsv = Double.parseDouble(kolom[1]);
+                    titik.setLatitude(latitCsv);
+                    titik.setLongitude(longitCsv);
+                    listTitik.add(titik);
+                    titik.reset();
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return listTitik;
+
+	}
+
+
 	
 	public ArrayList<List<Long>> ambilListSeq(){
 		return this.listSeq;

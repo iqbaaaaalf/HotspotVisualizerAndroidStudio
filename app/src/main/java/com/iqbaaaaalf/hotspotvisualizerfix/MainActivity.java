@@ -15,9 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.iqbaaaaalf.hotspotvisualizerfix.fragment.PraprosesFragment;
-import com.iqbaaaaalf.hotspotvisualizerfix.fragment.SpadeFragment;
-import com.iqbaaaaalf.hotspotvisualizerfix.fragment.VisualisasiFragment;
+import com.iqbaaaaalf.hotspotvisualizerfix.view.PraprosesFragment;
+import com.iqbaaaaalf.hotspotvisualizerfix.view.SpadeFragment;
+import com.iqbaaaaalf.hotspotvisualizerfix.view.VisualisasiFragment;
 
 import java.io.File;
 

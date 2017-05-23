@@ -2,13 +2,17 @@ package com.iqbaaaaalf.hotspotvisualizerfix.util;
 
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.DataType;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.OneSeqType;
+import com.iqbaaaaalf.hotspotvisualizerfix.dataType.Point;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +22,7 @@ import java.util.regex.Pattern;
  * 
  */
 public class Util {
-	CSVReader csvreader = new CSVReader();
+	private CSVReader csvreader = new CSVReader();
 	ArrayList<List<Long>> listSeq = new ArrayList<List<Long>>();
 	/*
 	 * mengubah format tanggal YYYY-MM-DD menjadi format unix time
@@ -32,8 +36,7 @@ public class Util {
 			System.out.println("tanggal tidak dapat di parsing");
 			e.printStackTrace();
 		}
-		long unixTime = (long) date.getTime()/1000;
-		return unixTime;
+		return (long) date.getTime()/1000;
 	}
 	/*
 	 * mengubah format tanggal DD-MM-YYYY menjadi format unix time
@@ -47,8 +50,7 @@ public class Util {
 			System.out.println("tanggal tidak dapat di parsing");
 			e.printStackTrace();
 		}
-		long unixTime = (long) date.getTime()/1000;
-		return unixTime;
+		return (long) date.getTime()/1000;
 	}
 	/*
 	 * mengubah format unix time ke tanggal dengan format dd-mm-yyyy
@@ -56,7 +58,7 @@ public class Util {
 	public String convert2Date(long tanggalUnix) throws ParseException {
 		Date date = new Date(tanggalUnix*1000L);
 		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
-		String tanggal = null;
+		String tanggal;
 		tanggal = dateFormat.format(date);
 		long unixTime = (long) date.getTime()/1000;
 		return tanggal;
@@ -109,7 +111,7 @@ public class Util {
 	
 	public void cariKolom(double longit, double latit, String inputPath){
 //		List<String> temp = new ArrayList<String>();
-		csvreader.csvSearch(longit, latit, inputPath);
+		csvreader.csvSearchForSeq(longit, latit, inputPath);
 	}
 	
 	public ArrayList<List<Long>> ambilListSeq(){
@@ -146,6 +148,47 @@ public class Util {
 
 
 		return allSeq;
+	}
+
+	public ArrayList<Point> getCommonPoint(OneSeqType oneSeq, String alamatFile){
+		ArrayList<Point> listPoint = new ArrayList<Point>();
+		ArrayList<Set<Point>> temp = new ArrayList<Set<Point>>();
+
+		Set<Point> setPoint = new HashSet<Point>();
+		Set<Point> setPoint2 = new HashSet<Point>();
+		Set<Point> setTemp = new HashSet<Point>();
+
+		if(oneSeq.getListUnix().size() == 1){
+			listPoint = csvreader.csvSearchForVisual(oneSeq.getListUnix().get(0), alamatFile);
+		}else if(oneSeq.getListUnix().size() == 2){
+			setPoint.addAll(csvreader.csvSearchForVisual(oneSeq.getListUnix().get(0),alamatFile));
+			setPoint2.addAll(csvreader.csvSearchForVisual(oneSeq.getListUnix().get(1),alamatFile));
+			if(setPoint.size()<setPoint2.size()){
+				setTemp.retainAll(setPoint);
+				setTemp.retainAll(setPoint2);
+				listPoint.addAll(setTemp);
+			}else if(setPoint.size()>setPoint2.size()){
+				setTemp.retainAll(setPoint2);
+				setTemp.retainAll(setPoint);
+				listPoint.addAll(setTemp);
+			}
+		}else{
+			for (Long unix : oneSeq.getListUnix()){
+				setPoint.addAll(csvreader.csvSearchForVisual(unix,alamatFile));
+				temp.add(setPoint);
+			}
+
+			temp.sort(new Comparator<Set>(){
+				public int compare(Set a1, Set a2){
+					return a2.size() - a1.size();
+				}
+			});
+			for (Set<Point> point: temp){
+				setTemp.retainAll(point);
+			}
+			listPoint.addAll(setTemp);
+		}
+		return listPoint;
 	}
 
 

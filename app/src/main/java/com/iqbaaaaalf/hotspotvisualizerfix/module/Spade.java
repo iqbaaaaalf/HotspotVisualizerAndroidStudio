@@ -22,6 +22,7 @@ public class Spade {
     private ArrayList<String> seq = new ArrayList<String>();
     private ArrayList<OneSeqType> allSeq = new ArrayList<OneSeqType>();
     private String outputReadable = null;
+    private ArrayList<String> outputReadablePerLine = new ArrayList<String>();
 
     RunSpade rs = new RunSpade();
     TxtReader tr = new TxtReader();
@@ -57,6 +58,7 @@ public class Spade {
 
     }
 
+
     public void printReadableSeq(){
         TxtWriterSeqReadable tws = new TxtWriterSeqReadable();
         tws.buatFile(outputPathTemp);
@@ -74,6 +76,8 @@ public class Spade {
                 tws.txtTulis(tanggal);
             }
             tws.setOneSeq();
+            outputReadablePerLine.add(tws.getOneLine());
+
         }
         tws.set();
         outputReadable = tws.getText();
@@ -82,4 +86,13 @@ public class Spade {
     public String getOutputReadable() {
         return outputReadable;
     }
+
+    public ArrayList<String> getOutputReadablePerLine() {
+        return outputReadablePerLine;
+    }
+
+    public ArrayList<OneSeqType> getAllSeq() {
+        return allSeq;
+    }
+
 }

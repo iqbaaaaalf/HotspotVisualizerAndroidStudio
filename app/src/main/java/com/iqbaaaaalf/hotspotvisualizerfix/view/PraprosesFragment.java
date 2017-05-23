@@ -1,8 +1,7 @@
-package com.iqbaaaaalf.hotspotvisualizerfix.fragment;
+package com.iqbaaaaalf.hotspotvisualizerfix.view;
 
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +12,12 @@ import android.widget.Toast;
 
 import com.iqbaaaaalf.hotspotvisualizerfix.R;
 import com.iqbaaaaalf.hotspotvisualizerfix.module.Praproses;
+import com.iqbaaaaalf.hotspotvisualizerfix.util.DirectoryList;
 import com.iqbaaaaalf.hotspotvisualizerfix.util.RunSpade;
 import com.iqbaaaaalf.hotspotvisualizerfix.util.RunTime;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,10 +29,11 @@ public class PraprosesFragment extends Fragment {
     Praproses pra = new Praproses();
     RunTime time = new RunTime();
     RunSpade spade = new RunSpade();
+    DirectoryList dir = new DirectoryList();
 
-    String PathInput = Environment.getExternalStorageDirectory().toString()+"/dataSkripsi/input/";
-    String PathOutputCsv= Environment.getExternalStorageDirectory().toString()+"/dataSkripsi/output/praproses/csv/";
-    String PathOutputSeq= Environment.getExternalStorageDirectory().toString()+"/dataSkripsi/output/praproses/seq/";
+    String PathInput = dir.getPathInput();
+    String PathOutputCsv= dir.getPathOutputCsv();
+    String PathOutputSeq= dir.getPathOutputSeq();
     String NamaFile = null;
     View view;
     File fileChecker;

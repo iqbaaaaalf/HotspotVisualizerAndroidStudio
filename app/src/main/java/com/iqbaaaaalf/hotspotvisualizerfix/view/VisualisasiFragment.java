@@ -1,4 +1,4 @@
-package com.iqbaaaaalf.hotspotvisualizerfix.fragment;
+package com.iqbaaaaalf.hotspotvisualizerfix.view;
 
 
 import android.os.Bundle;
