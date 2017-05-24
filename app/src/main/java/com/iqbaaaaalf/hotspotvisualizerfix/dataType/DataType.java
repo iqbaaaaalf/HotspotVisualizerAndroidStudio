@@ -1,6 +1,9 @@
 package com.iqbaaaaalf.hotspotvisualizerfix.dataType;
 
-public class DataType {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class DataType implements Parcelable {
 	private double longitude;
 	private double latitude;
 	private String date;
@@ -40,4 +43,35 @@ public class DataType {
 		return true;
 	}
 
+
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+	  	dest.writeDouble(this.longitude);
+		dest.writeDouble(this.latitude);
+		dest.writeString(this.date);
+	}
+
+	protected DataType(Parcel in){
+		this.longitude = in.readDouble();
+		this.latitude = in.readDouble();
+		this.date = in.readString();
+	}
+
+	public static final Creator<DataType> CREATOR = new Creator<DataType>() {
+		@Override
+		public DataType createFromParcel(Parcel source) {
+			return new DataType(source);
+		}
+
+		@Override
+		public DataType[] newArray(int size) {
+			return new DataType[size];
+		}
+	};
 }

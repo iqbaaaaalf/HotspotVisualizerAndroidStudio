@@ -204,7 +204,7 @@ public class SequenceDatabase {
 //			myInput = new BufferedReader(new InputStreamReader(fin));
 //			int i = 0;
 //			while ((thisLine = myInput.readLine()) != null) {
-//				// ajoute une séquence
+//				// ajoute une sï¿½quence
 //				String[] split = thisLine.split(" ");
 //				i++;
 //				if (nblinetoread == i) {
@@ -238,7 +238,7 @@ public class SequenceDatabase {
 //			myInput = new BufferedReader(new InputStreamReader(fin));
 //			int i = 0;
 //			while ((thisLine = myInput.readLine()) != null) {
-//				// ajoute une séquence
+//				// ajoute une sï¿½quence
 //				String[] split = thisLine.split(" ");
 //				i++;
 ////				if (nblinetoread == i) {
@@ -283,7 +283,7 @@ public class SequenceDatabase {
 //			int lastId = 0;
 //			Sequence sequence = null;
 //			while ((thisLine = myInput.readLine()) != null) {
-//				// ajoute une séquence
+//				// ajoute une sï¿½quence
 //				String[] split = thisLine.split(" ");
 //				int id = Integer.parseInt(split[0]);
 //				int val = Integer.parseInt(split[1]);
@@ -355,7 +355,7 @@ public class SequenceDatabase {
 //			int lastId = 0;
 //			Sequence sequence = null;
 //			while ((thisLine = myInput.readLine()) != null) {
-//				// ajoute une séquence
+//				// ajoute une sï¿½quence
 //				String[] split = thisLine.split(" ");
 //				int id = Integer.parseInt(split[0]);
 //				int val = Integer.parseInt(split[1]);
@@ -414,7 +414,7 @@ public class SequenceDatabase {
 //			myInput = new BufferedReader(new InputStreamReader(fin));
 //			int i = 0;
 //			while ((thisLine = myInput.readLine()) != null) {
-//				// ajoute une séquence
+//				// ajoute une sï¿½quence
 //				String[] split = thisLine.split(" ");
 //				i++;
 //				if (nblinetoread == i) {

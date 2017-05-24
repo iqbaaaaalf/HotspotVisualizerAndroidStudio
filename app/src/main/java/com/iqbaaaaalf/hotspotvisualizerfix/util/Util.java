@@ -152,30 +152,73 @@ public class Util {
 
 	public ArrayList<Point> getCommonPoint(OneSeqType oneSeq, String alamatFile){
 		ArrayList<Point> listPoint = new ArrayList<Point>();
+		ArrayList<Point> listPoint1 ;
+		ArrayList<Point> listPoint2 ;
 		ArrayList<Set<Point>> temp = new ArrayList<Set<Point>>();
 
-		Set<Point> setPoint = new HashSet<Point>();
-		Set<Point> setPoint2 = new HashSet<Point>();
+		Set<Point> setPoint1 ;
+		Set<Point> setPoint2 ;
 		Set<Point> setTemp = new HashSet<Point>();
 
+		System.out.println("===== Jumlah unix dalam Seq : " + oneSeq.getListUnix().size() + " =====");
+
 		if(oneSeq.getListUnix().size() == 1){
+
+			System.out.println("-- Jumlah Unix yang ingin dicari titiknya adalah 1 --");
+
 			listPoint = csvreader.csvSearchForVisual(oneSeq.getListUnix().get(0), alamatFile);
+
 		}else if(oneSeq.getListUnix().size() == 2){
-			setPoint.addAll(csvreader.csvSearchForVisual(oneSeq.getListUnix().get(0),alamatFile));
-			setPoint2.addAll(csvreader.csvSearchForVisual(oneSeq.getListUnix().get(1),alamatFile));
-			if(setPoint.size()<setPoint2.size()){
-				setTemp.retainAll(setPoint);
-				setTemp.retainAll(setPoint2);
-				listPoint.addAll(setTemp);
-			}else if(setPoint.size()>setPoint2.size()){
-				setTemp.retainAll(setPoint2);
-				setTemp.retainAll(setPoint);
-				listPoint.addAll(setTemp);
+			setPoint1 = new HashSet<Point>(csvreader.csvSearchForVisual(oneSeq.getListUnix().get(0),alamatFile));
+
+//			System.out.println("----- TEST isi dari Setpoint1 -------");
+//			for (Point po : setPoint1){
+//				System.out.print("Long : " + po.getLongitude() + " , ");
+//				System.out.println("Lat : " + po.getLatitude());
+//			}
+
+			setPoint2 = new HashSet<Point>(csvreader.csvSearchForVisual(oneSeq.getListUnix().get(1),alamatFile));
+
+//			System.out.println("----- TEST isi dari Setpoint2 -------");
+//			for (Point la : setPoint2){
+//				System.out.print("Long : " + la.getLongitude() + " , ");
+//				System.out.println("Lat : " + la.getLatitude());
+//			}
+
+
+			if(setPoint1.size()<setPoint2.size()){
+				setPoint1.retainAll(setPoint2);
+				listPoint1 = new ArrayList<Point>(setPoint1);
+
+				System.out.println("----- TEST kalau setpoin1 lebih kecil -------");
+				System.out.println("Size list : " + listPoint1.size());
+				for (Point la : listPoint1){
+					System.out.print("Long : " + la.getLongitude() + " , ");
+					System.out.println("Lat : " + la.getLatitude());
+				}
+
+
+//				setTemp.retainAll(setPoint2);
+				listPoint.addAll(listPoint1);
+			}else{
+				setPoint2.retainAll(setPoint1);
+				listPoint2 = new ArrayList<Point>(setPoint2);
+
+
+				System.out.println("----- TEST kalau setpoin2 lebih kecil -------");
+				System.out.println("Size list : " + listPoint2.size());
+				for (Point la : listPoint2){
+					System.out.print("Long : " + la.getLongitude() + " , ");
+					System.out.println("Lat : " + la.getLatitude());
+				}
+
+//				setTemp.retainAll(setPoint1);
+				listPoint.addAll(listPoint2);
 			}
 		}else{
 			for (Long unix : oneSeq.getListUnix()){
-				setPoint.addAll(csvreader.csvSearchForVisual(unix,alamatFile));
-				temp.add(setPoint);
+				setPoint1= new HashSet<Point>(csvreader.csvSearchForVisual(unix,alamatFile));
+				temp.add(setPoint1);
 			}
 
 			temp.sort(new Comparator<Set>(){

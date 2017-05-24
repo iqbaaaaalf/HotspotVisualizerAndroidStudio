@@ -18,7 +18,7 @@ public class TxtWriterSeqReadable implements TxtWrite {
     private Long support = null;
     private String text = null;
     private String oneLine = null ;
-    private String openingWord = "Kemunculan beruntun pada tanggal ";
+    private String openingWord = "Kemunculan pada tanggal ";
 
     public String getOneLine() {
         return oneLine;
@@ -50,9 +50,9 @@ public class TxtWriterSeqReadable implements TxtWrite {
 
     @Override
     public void setOneSeq() {
-        sb.append("pada "+support+" titik.");
+        sb.append("di "+support+" titik.");
         sb.append("\n");
-        sbTemp.append("pada "+support+" titik.");
+        sbTemp.append("di "+support+" titik.");
         sbTemp.append("\n");
         oneLine = sbTemp.toString();
         sbTemp.replace(0, sbTemp.length(),"");

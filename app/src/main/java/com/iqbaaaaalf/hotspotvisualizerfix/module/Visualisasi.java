@@ -9,25 +9,28 @@ import java.util.ArrayList;
 
 public class Visualisasi {
 
-    private int selectedSpinnerPosition = 0;
+    private int selectedCardPosition = 0;
     private ArrayList<OneSeqType> allSeq = new ArrayList<OneSeqType>();
     private Util util = new Util();
-    private ArrayList<Point> commonPoint = new ArrayList<Point>();
+    private ArrayList<Point> common = new ArrayList<Point>();
 
-    public void setSelectedSpinnerPosition(int selectedSpinnerPosition) {
-        this.selectedSpinnerPosition = selectedSpinnerPosition;
+    public void setSelectedCardPosition(int selectedCardPosition) {
+        this.selectedCardPosition = selectedCardPosition;
     }
+
+
 
     public void setAllSeq(ArrayList<OneSeqType> allSeq) {
         this.allSeq = allSeq;
     }
 
-    public ArrayList<Point> getCommonPoint() {
-        return commonPoint;
+    public ArrayList<Point> getCommon() {
+        return common;
     }
 
     public void run(String alamatFile){
-       commonPoint = util.getCommonPoint(allSeq.get(selectedSpinnerPosition), alamatFile);
+        System.out.println("Posisi terpilih dari card : " + selectedCardPosition);
+        common = util.getCommonPoint(allSeq.get(selectedCardPosition), alamatFile);
     }
 
 }

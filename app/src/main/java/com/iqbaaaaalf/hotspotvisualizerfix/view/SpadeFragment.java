@@ -8,15 +8,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.iqbaaaaalf.hotspotvisualizerfix.MainActivity;
 import com.iqbaaaaalf.hotspotvisualizerfix.R;
 import com.iqbaaaaalf.hotspotvisualizerfix.module.Spade;
 import com.iqbaaaaalf.hotspotvisualizerfix.module.Visualisasi;
@@ -31,17 +26,19 @@ import java.io.IOException;
 public class SpadeFragment extends Fragment {
 
     EditText input;
-    TextView outputReadableEditText;
     View view;
     RunTime time = new RunTime();
     Visualisasi visualisasi= new Visualisasi();
     Spade spade = new Spade();
     DirectoryList dir = new DirectoryList();
 
+    String PathCheck = dir.getPathOutputCsv();
     String PathInput = dir.getPathInputSpade();
     String PathOutputSpade= dir.getPathOutputSpade();
     String PathOutputTemp= dir.getPathOutputTemp();
     String NamaFile = null;
+    String CheckFile;
+
 
     EditText editTextSupport;
 
@@ -64,7 +61,9 @@ public class SpadeFragment extends Fragment {
                 try {
                     SpadeBtn();
                     Intent intent = new Intent(getActivity(), SequenceActivity.class);
-                    intent.putStringArrayListExtra("allSeq",spade.getOutputReadablePerLine());
+                    intent.putStringArrayListExtra("allSeqPerLine",spade.getOutputReadablePerLine());
+                    intent.putExtra("allSeq",spade.getAllSeq());
+                    intent.putExtra("checkFile",CheckFile);
                     startActivity(intent);
 
                 } catch (IOException e) {
@@ -83,10 +82,8 @@ public class SpadeFragment extends Fragment {
 //        spinner = (Spinner)view.findViewById(R.id.spinnerSpade);
         input = (EditText)view.findViewById(R.id.inptFileSpade);
         editTextSupport = (EditText)view.findViewById(R.id.inptSupport);
-        outputReadableEditText = (TextView) view.findViewById(R.id.editTextReadableContainer);
         String support = null;
         double supportValue = 0.0;
-        outputReadableEditText.setText("");
 
         if(TextUtils.isEmpty(input.getText()) || TextUtils.isEmpty(editTextSupport.getText())){
             Toast.makeText(getActivity().getBaseContext(), "Nilai yang dimasukan tidak boleh kosong",
@@ -99,13 +96,12 @@ public class SpadeFragment extends Fragment {
             support = editTextSupport.getText().toString().trim();
             supportValue = Double.parseDouble(support);
 
+            CheckFile = PathCheck + NamaFile + ".csv";
             String InputFile = PathInput + "Seq-" +NamaFile + ".txt";
             String OutputFile = PathOutputSpade + "Spade-" + NamaFile + ".txt";
             String OutputFileTemp = PathOutputTemp + "Spade-" + NamaFile + ".txt";
 
             spade.run(InputFile, OutputFile, OutputFileTemp ,supportValue);
-            outputReadableEditText.setText(spade.getOutputReadable());
-            visualisasi.setAllSeq(spade.getAllSeq());
 
             Toast.makeText(getActivity().getBaseContext(), "Eksekusi dalam "+time.end()+" millsec Berhasil! Data tersimpan di "+ OutputFile,
                     Toast.LENGTH_LONG).show();

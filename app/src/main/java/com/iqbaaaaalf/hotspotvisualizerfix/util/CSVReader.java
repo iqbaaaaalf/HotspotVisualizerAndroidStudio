@@ -107,7 +107,6 @@ public class CSVReader {
 		String csvSplitBy = ",";
 		ArrayList<Point> listTitik = new ArrayList<Point>();
 		Long unixTimeCsv = (long) 0;
-		Point titik = new Point();
         Double longitCsv = (double) 0;
         Double latitCsv = (double) 0;
 
@@ -116,14 +115,20 @@ public class CSVReader {
 			while ((line = br.readLine()) != null) {
 				// menggunakan pembatas koma - comma separated value
 				String[] kolom = line.split(csvSplitBy);
+				Point titik = new Point();
+
 				unixTimeCsv = Long.parseLong(kolom[3]);
 				if(unixTimeCsv.equals(unix)){
                     longitCsv = Double.parseDouble(kolom[0]);
                     latitCsv = Double.parseDouble(kolom[1]);
+
+//					System.out.println("----- TEST hasil READER dalam pencarian titik pada unix " + unix + " -------");
+//						System.out.print("Long : " + longitCsv + " , ");
+//						System.out.println("Lat : " + latitCsv);
+
                     titik.setLatitude(latitCsv);
                     titik.setLongitude(longitCsv);
                     listTitik.add(titik);
-                    titik.reset();
 				}
 			}
 

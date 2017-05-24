@@ -1,4 +1,4 @@
-package com.iqbaaaaalf.hotspotvisualizerfix;
+package com.iqbaaaaalf.hotspotvisualizerfix.view;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.iqbaaaaalf.hotspotvisualizerfix.R;
 import com.iqbaaaaalf.hotspotvisualizerfix.view.PraprosesFragment;
 import com.iqbaaaaalf.hotspotvisualizerfix.view.SpadeFragment;
 import com.iqbaaaaalf.hotspotvisualizerfix.view.VisualisasiFragment;
