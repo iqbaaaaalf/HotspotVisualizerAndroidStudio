@@ -1,6 +1,7 @@
 package com.iqbaaaaalf.hotspotvisualizerfix.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.iqbaaaaalf.hotspotvisualizerfix.R;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.OneSeqType;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.Point;
 import com.iqbaaaaalf.hotspotvisualizerfix.module.Visualisasi;
+import com.iqbaaaaalf.hotspotvisualizerfix.view.MapsActivity;
 
 import java.util.ArrayList;
 
@@ -92,9 +94,9 @@ public class SequenceAdapter extends RecyclerView.Adapter<SequenceAdapter.ViewHo
                     System.out.println("Lat : " + po.getLatitude());
                 }
 
-//                Intent mapIntent = new Intent(context, MapsActivity.class);
-//                mapIntent.putExtra("pointList", visualisasi.getCommonPoint());
-//                context.startActivity(mapIntent);
+                Intent mapIntent = new Intent(context, MapsActivity.class);
+                mapIntent.putExtra("geoJson", visualisasi.getGeoJson().toString());
+                context.startActivity(mapIntent);
             }
         });
     }

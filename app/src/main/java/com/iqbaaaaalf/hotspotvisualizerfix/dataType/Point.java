@@ -14,13 +14,13 @@ public class Point implements Parcelable {
     private double latitude;
 
     public Point() {
-        this.longitude = 0;
-        this.latitude = 0;
+        this.longitude = 0.0;
+        this.latitude = 0.0;
     }
 
     public void reset(){
-        this.longitude = 0;
-        this.latitude = 0;
+        this.longitude = 0.0;
+        this.latitude = 0.0;
     }
 
     public double getLongitude() {

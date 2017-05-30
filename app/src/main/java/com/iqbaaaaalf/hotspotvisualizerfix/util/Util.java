@@ -1,8 +1,15 @@
 package com.iqbaaaaalf.hotspotvisualizerfix.util;
 
+import android.util.ArraySet;
+import android.util.Log;
+
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.DataType;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.OneSeqType;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.Point;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -119,6 +126,60 @@ public class Util {
 		return this.listSeq;
 	}
 
+	public JSONObject listToGeoJson(ArrayList<Point> listTitik) {
+        JSONObject featureCollection = new JSONObject();
+        try {
+            featureCollection.put("type", "featureCollection");
+            JSONArray featureList = new JSONArray();
+            // iterate through your list
+            for (Point titik : listTitik) {
+                // {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-94.149, 36.33]}
+
+                JSONObject point = new JSONObject();
+                point.put("type", "Point");
+                // construct a JSONArray from a string; can also use an array or list
+                JSONArray koor = null;
+
+                koor = new JSONArray("["+titik.getLongitude()+","+titik.getLatitude()+"]");
+
+                point.put("coordinates", koor);
+                JSONObject feature = new JSONObject();
+				feature.put("type", "Feature");
+                feature.put("geometry", point);
+                featureList.put(feature);
+                featureCollection.put("features", featureList);
+            }
+        } catch (JSONException e) {
+            Log.e("geoJson Exception","tidak dapat save koordinat kedalam geojson: "+e.toString());
+        }
+        // output the result
+        System.out.println(featureCollection.toString());
+
+        return featureCollection;
+	}
+
+	public String longLatToString(Double longit, Double latit){
+        return longit + ";" +latit;
+    }
+
+    public Point stringToPointLongLat(String stringLongLat){
+        Point titik = new Point();
+        Double latit = (double) 0;
+        Double longit = (double) 0;
+        Pattern p = Pattern.compile("((?:\\-|)\\d.*?);((?:\\-|)\\d.*)");
+        Matcher m  = p.matcher(stringLongLat);
+        if(m.find()){
+            longit = Double.parseDouble(m.group(1));
+            latit = Double.parseDouble(m.group(2));
+			System.out.println("Check Parsing in stringToPointLongLat");
+			System.out.println("Long : " + longit + " , Lat: "+ latit);
+        }
+        titik.setLongitude(longit.doubleValue());
+        titik.setLatitude(latit.doubleValue());
+
+        return titik;
+    }
+
 	public ArrayList<OneSeqType> getUnixFromSeq(ArrayList<String> seq){
 		String tanggal = "";
 		ArrayList<OneSeqType> allSeq = new ArrayList<>();
@@ -140,7 +201,9 @@ public class Util {
 
 			if(n.find()){
 				oneSeq.setSupport(Long.parseLong(n.group(1)));
-			}
+			}else{
+                System.out.println("Tidak ditemukan pattern Long Lat dalam parsing string ke Doublw");
+            }
 			System.out.println("Jumlah unix pada line ada " + unix.size() + " dan jumlah support " + oneSeq.getSupport());
 			allSeq.add(oneSeq);
 
@@ -152,85 +215,130 @@ public class Util {
 
 	public ArrayList<Point> getCommonPoint(OneSeqType oneSeq, String alamatFile){
 		ArrayList<Point> listPoint = new ArrayList<Point>();
-		ArrayList<Point> listPoint1 ;
-		ArrayList<Point> listPoint2 ;
-		ArrayList<Set<Point>> temp = new ArrayList<Set<Point>>();
+		Set<Point> setPoint1 = new HashSet<Point>();
+		Set<Point> setPoint2 = new HashSet<Point>();
 
-		Set<Point> setPoint1 ;
-		Set<Point> setPoint2 ;
-		Set<Point> setTemp = new HashSet<Point>();
+        Set<String> stringLongLatList1 = new HashSet<String>();
+        Set<String> stringLongLatList2 = new HashSet<String>();
+        Set<String> stringLongLatListTemp = new HashSet<String>();
+        ArrayList<Set<String>> stringListTemp = new ArrayList<Set<String>>();
 
 		System.out.println("===== Jumlah unix dalam Seq : " + oneSeq.getListUnix().size() + " =====");
 
 		if(oneSeq.getListUnix().size() == 1){
 
-			System.out.println("-- Jumlah Unix yang ingin dicari titiknya adalah 1 --");
-
 			listPoint = csvreader.csvSearchForVisual(oneSeq.getListUnix().get(0), alamatFile);
 
 		}else if(oneSeq.getListUnix().size() == 2){
-			setPoint1 = new HashSet<Point>(csvreader.csvSearchForVisual(oneSeq.getListUnix().get(0),alamatFile));
+			setPoint1.addAll(csvreader.csvSearchForVisual(oneSeq.getListUnix().get(0),alamatFile));
 
-//			System.out.println("----- TEST isi dari Setpoint1 -------");
-//			for (Point po : setPoint1){
-//				System.out.print("Long : " + po.getLongitude() + " , ");
-//				System.out.println("Lat : " + po.getLatitude());
+			////////////////////// --- TEST --- ///////////////////
+//			System.out.println("===== TEST ambil titik dari csv berdasarkan unix time 1 ====");
+//			for (Point testTitik : setPoint1){
+//				System.out.println("Long : " + testTitik.getLongitude() + " , Lat : " + testTitik.getLatitude());
 //			}
+//			///////////////////////////////////////////////////////
 
-			setPoint2 = new HashSet<Point>(csvreader.csvSearchForVisual(oneSeq.getListUnix().get(1),alamatFile));
+            for (Point titik:setPoint1){
+                stringLongLatList1.add(longLatToString(titik.getLongitude(),titik.getLatitude()));
+            }
 
-//			System.out.println("----- TEST isi dari Setpoint2 -------");
-//			for (Point la : setPoint2){
-//				System.out.print("Long : " + la.getLongitude() + " , ");
-//				System.out.println("Lat : " + la.getLatitude());
+			////////////////////// --- TEST --- ///////////////////
+//			System.out.println("===== TEST ambil String titik  1 ====");
+//			for (String stringTitik : stringLongLatList1){
+//				System.out.println("Long Lat : " + stringTitik);
 //			}
+			///////////////////////////////////////////////////////
 
+			setPoint2.addAll(csvreader.csvSearchForVisual(oneSeq.getListUnix().get(1),alamatFile));
 
-			if(setPoint1.size()<setPoint2.size()){
-				setPoint1.retainAll(setPoint2);
-				listPoint1 = new ArrayList<Point>(setPoint1);
+			////////////////////// --- TEST --- ///////////////////
+//			System.out.println("===== TEST ambil titik dari csv berdasarkan unix time 2 ====");
+//			for (Point testTitik : setPoint2){
+//				System.out.println("Long : " + testTitik.getLongitude() + " , Lat : " + testTitik.getLatitude());
+//			}
+			///////////////////////////////////////////////////////
 
-				System.out.println("----- TEST kalau setpoin1 lebih kecil -------");
-				System.out.println("Size list : " + listPoint1.size());
-				for (Point la : listPoint1){
-					System.out.print("Long : " + la.getLongitude() + " , ");
-					System.out.println("Lat : " + la.getLatitude());
+            for (Point titik:setPoint2){
+                stringLongLatList2.add(longLatToString(titik.getLongitude(),titik.getLatitude()));
+            }
+
+			////////////////////// --- TEST --- ///////////////////
+//			System.out.println("===== TEST ambil String titik  2 ====");
+//			for (String stringTitik : stringLongLatList2){
+//				System.out.println("Long Lat : " + stringTitik);
+//			}
+			///////////////////////////////////////////////////////
+
+			if(stringLongLatList1.size()<stringLongLatList2.size()){
+				stringLongLatList1.retainAll(stringLongLatList2);
+
+				////////////////////// --- TEST --- ///////////////////
+				System.out.println("===== TEST kalau stringLongLatList1 lebih kecil ====");
+
+				for (String la : stringLongLatList1){
+					System.out.println("String Long Lat : " + la);
 				}
 
+				///////////////////////////////////////////////////////
 
-//				setTemp.retainAll(setPoint2);
-				listPoint.addAll(listPoint1);
+                for (String titikString : stringLongLatList1){
+                    listPoint.add(stringToPointLongLat(titikString));
+                }
+
+                stringLongLatList1.clear();
+                stringLongLatList2.clear();
+                stringLongLatListTemp.clear();
+                setPoint1.clear();
+                setPoint2.clear();
+
 			}else{
-				setPoint2.retainAll(setPoint1);
-				listPoint2 = new ArrayList<Point>(setPoint2);
+				stringLongLatList2.retainAll(stringLongLatList1);
 
+				////////////////////// --- TEST --- ///////////////////
+                System.out.println("===== TEST kalau stringLongLatList2 lebih kecil ====");
+                for (String la : stringLongLatList2){
+                    System.out.println("String Long Lat : " + la);
+                }
+				System.out.println("\n\n");
+				///////////////////////////////////////////////////////
 
-				System.out.println("----- TEST kalau setpoin2 lebih kecil -------");
-				System.out.println("Size list : " + listPoint2.size());
-				for (Point la : listPoint2){
-					System.out.print("Long : " + la.getLongitude() + " , ");
-					System.out.println("Lat : " + la.getLatitude());
-				}
+                for (String titikString : stringLongLatList2){
+                    listPoint.add(stringToPointLongLat(titikString));
+                }
 
-//				setTemp.retainAll(setPoint1);
-				listPoint.addAll(listPoint2);
+                stringLongLatList1.clear();
+                stringLongLatList2.clear();
+                stringLongLatListTemp.clear();
+                setPoint1.clear();
+                setPoint2.clear();
 			}
 		}else{
 			for (Long unix : oneSeq.getListUnix()){
-				setPoint1= new HashSet<Point>(csvreader.csvSearchForVisual(unix,alamatFile));
-				temp.add(setPoint1);
+				setPoint1.addAll(csvreader.csvSearchForVisual(unix,alamatFile));
+                for (Point titik: setPoint1){
+                    stringLongLatList1.add(longLatToString(titik.getLongitude(),titik.getLatitude()));
+                }
+                stringListTemp.add(stringLongLatList1);
 			}
 
-			temp.sort(new Comparator<Set>(){
-				public int compare(Set a1, Set a2){
-					return a2.size() - a1.size();
-				}
-			});
-			for (Set<Point> point: temp){
-				setTemp.retainAll(point);
+			stringLongLatList1.clear();
+
+			// masukin list string pertama sekalian nanti
+			// dijadiin tampungan
+			stringLongLatListTemp = stringListTemp.get(0);
+			for (int index = 1; index<=stringListTemp.size(); index++){
+				stringLongLatListTemp.retainAll(stringListTemp.get(index));
 			}
-			listPoint.addAll(setTemp);
+
+            for (String titikString : stringLongLatListTemp){
+                listPoint.add(stringToPointLongLat(titikString));
+            }
+
+			stringLongLatListTemp.clear();
+			setPoint1.clear();
 		}
+
 		return listPoint;
 	}
 

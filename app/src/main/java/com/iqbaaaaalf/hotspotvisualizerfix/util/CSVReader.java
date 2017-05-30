@@ -126,8 +126,8 @@ public class CSVReader {
 //						System.out.print("Long : " + longitCsv + " , ");
 //						System.out.println("Lat : " + latitCsv);
 
-                    titik.setLatitude(latitCsv);
-                    titik.setLongitude(longitCsv);
+                    titik.setLatitude(latitCsv.doubleValue());
+                    titik.setLongitude(longitCsv.doubleValue());
                     listTitik.add(titik);
 				}
 			}

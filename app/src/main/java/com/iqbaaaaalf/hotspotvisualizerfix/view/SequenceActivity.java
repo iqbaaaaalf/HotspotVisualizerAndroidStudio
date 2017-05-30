@@ -20,7 +20,7 @@ public class SequenceActivity extends AppCompatActivity {
     private ArrayList<String> seqPerLine = new ArrayList<String>();
     private ArrayList<String> emptyList = new ArrayList<String>();
     private SequenceAdapter sequenceAdapter;
-    private Context context = this.getBaseContext();
+    private Context context = this;
     private ArrayList<OneSeqType> allSeq = new ArrayList<OneSeqType>();
     private String fileInput;
 
