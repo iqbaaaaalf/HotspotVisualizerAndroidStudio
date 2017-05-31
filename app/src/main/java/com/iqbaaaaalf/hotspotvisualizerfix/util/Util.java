@@ -3,6 +3,7 @@ package com.iqbaaaaalf.hotspotvisualizerfix.util;
 import android.util.ArraySet;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.DataType;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.OneSeqType;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.Point;
@@ -124,6 +125,15 @@ public class Util {
 	public ArrayList<List<Long>> ambilListSeq(){
 		listSeq = csvreader.ambilListSeq();
 		return this.listSeq;
+	}
+
+	public ArrayList<LatLng> pointlatLngList (ArrayList<Point> listTitik){
+		ArrayList<LatLng> list = new ArrayList<LatLng>();
+		for (Point titik : listTitik){
+			LatLng latLng = new LatLng(titik.getLatitude(),titik.getLongitude());
+			list.add(latLng);
+		}
+		return list;
 	}
 
 	public JSONObject listToGeoJson(ArrayList<Point> listTitik) {

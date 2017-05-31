@@ -1,6 +1,7 @@
 package com.iqbaaaaalf.hotspotvisualizerfix.module;
 
 
+import com.google.android.gms.maps.model.LatLng;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.OneSeqType;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.Point;
 import com.iqbaaaaalf.hotspotvisualizerfix.util.Util;
@@ -15,7 +16,7 @@ public class Visualisasi {
     private ArrayList<OneSeqType> allSeq = new ArrayList<OneSeqType>();
     private Util util = new Util();
     private ArrayList<Point> common = new ArrayList<Point>();
-    private JSONObject geoJson = new JSONObject();
+    private ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
 
     public void setSelectedCardPosition(int selectedCardPosition) {
         this.selectedCardPosition = selectedCardPosition;
@@ -27,6 +28,10 @@ public class Visualisasi {
         this.allSeq = allSeq;
     }
 
+    public ArrayList<LatLng> getLatLngList() {
+        return latLngList;
+    }
+
     public ArrayList<Point> getCommon() {
         return common;
     }
@@ -34,14 +39,8 @@ public class Visualisasi {
     public void run(String alamatFile){
         System.out.println("Posisi terpilih dari card : " + selectedCardPosition);
         common = util.getCommonPoint(allSeq.get(selectedCardPosition), alamatFile);
-        geoJson = util.listToGeoJson(common);
+        latLngList = util.pointlatLngList(common);
     }
-
-
-    public JSONObject getGeoJson() {
-        return geoJson;
-    }
-
 
 
 }

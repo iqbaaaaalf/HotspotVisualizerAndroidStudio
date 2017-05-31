@@ -24,10 +24,6 @@ public class SequenceActivity extends AppCompatActivity {
     private ArrayList<OneSeqType> allSeq = new ArrayList<OneSeqType>();
     private String fileInput;
 
-    public void setFileInput(String fileInput) {
-        this.fileInput = fileInput;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

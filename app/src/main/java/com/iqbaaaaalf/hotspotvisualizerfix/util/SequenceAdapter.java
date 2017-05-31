@@ -9,11 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.iqbaaaaalf.hotspotvisualizerfix.view.GoogleMapsActivity;
 import com.iqbaaaaalf.hotspotvisualizerfix.R;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.OneSeqType;
 import com.iqbaaaaalf.hotspotvisualizerfix.dataType.Point;
 import com.iqbaaaaalf.hotspotvisualizerfix.module.Visualisasi;
-import com.iqbaaaaalf.hotspotvisualizerfix.view.MapsActivity;
 
 import java.util.ArrayList;
 
@@ -94,9 +94,10 @@ public class SequenceAdapter extends RecyclerView.Adapter<SequenceAdapter.ViewHo
                     System.out.println("Lat : " + po.getLatitude());
                 }
 
-                Intent mapIntent = new Intent(context, MapsActivity.class);
-                mapIntent.putExtra("geoJson", visualisasi.getGeoJson().toString());
+                Intent mapIntent = new Intent(context, GoogleMapsActivity.class);
+                mapIntent.putExtra("latLngList", visualisasi.getLatLngList());
                 context.startActivity(mapIntent);
+
             }
         });
     }
