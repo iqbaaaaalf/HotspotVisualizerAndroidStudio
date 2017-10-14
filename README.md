@@ -1,6 +1,6 @@
-# Visualizing Frequent Hostspot in Riau Province Using SPADE on Mobile Application
+# Visualizing Frequent Hostspot on Mobile Application
 
-> Hostspot Visualizer from sequence data of hotspot in Province Riau using SPMF-Spade
+> Hostspot Visualizer from sequence data of hotspot in Province Riau Province using SPMF-Spade
 
 This project contains about : 
 
